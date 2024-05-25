@@ -2,36 +2,31 @@
 'use strict';
 
 
-function setStorage(val) {
-  return chrome.storage.local.set(val);
-}
-
-function getStorage(key) {
-  return chrome.storage.local.get(key);
-}
-
-chrome.runtime.onInstalled.addListener(function (param) {
-      console.log("Initialising then retrieving state");
-      return setStorage({
-                      state: "My State Value"
-                    }).then(function () {
-                    return getStorage("state");
-                  }).then(function (res) {
-                  console.log(res);
-                });
+chrome.runtime.onInstalled.addListener(function () {
+      console.log("Initialising state then retrieving it");
+      chrome.storage.local.set({
+              state: "My State Value"
+            }).then(function () {
+            return chrome.storage.local.get("state").then(function (res) {
+                        console.log(res.state);
+                      });
+          });
     });
 
 chrome.webNavigation.onCompleted.addListener(function (navEvent) {
       console.log("Naving");
-      console.log(navEvent.timeStamp);
+      console.log(navEvent);
     });
 
 chrome.tabs.onActivated.addListener(function (tabInfo) {
       console.log("Tabbing");
-      console.log(tabInfo.tabId);
-      console.log(tabInfo.windowId);
+      console.log(tabInfo);
     });
 
-exports.setStorage = setStorage;
-exports.getStorage = getStorage;
+chrome.tabs.onRemoved.addListener(function (id, tabRemoveInfo) {
+      console.log("Closing");
+      console.log(id);
+      console.log(tabRemoveInfo);
+    });
+
 /*  Not a pure module */
