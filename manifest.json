@@ -4,6 +4,6 @@
     "version": "1.0.0",
     "permissions": ["tabs", "webNavigation", "storage"],
     "background": {
-      "service_worker": "src/Demo.res.js"
+      "service_worker": "src/Worker.res.js"
     }
   }
